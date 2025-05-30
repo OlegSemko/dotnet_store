@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="add-product-form">
+    <h2>Add Product</h2>
+
+    <form method="post">
+        <input type="text" name="ProductName" placeholder="Enter product name" required />
+        <button type="submit">Add</button>
+    </form>
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <p style="color:green">@Model.Message</p>
+    }
+</div>
+
+<div class="text-center">
+    <h2>Product List</h2>
+    <ul>
+    @foreach (var product in Model.Products)
+    {
+        <li>@product.Name</li>
+    }
+    </ul>
+</div>
