@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyTestApp.Data;
 using MyTestApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyTestApp.Pages;
 
@@ -10,8 +11,9 @@ public class IndexModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private readonly AppDbContext _context;
 
-    public IndexModel(AppDbContext context)
+    public IndexModel(ILogger<IndexModel> logger, AppDbContext context)
     {
+        _logger = logger;
         _context = context;
     }
 
@@ -21,12 +23,22 @@ public class IndexModel : PageModel
     public string ProductName { get; set; }
     public string Message { get; set; }
 
-    public void OnGet()
+    [BindProperty(SupportsGet = true)]
+    public string SearchProduct { get; set; }
+
+    public async Task OnGetAsync()
     {
-        Products = _context.Products.ToList();
+        var query = _context.Products.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(SearchProduct))
+        {
+            query = query.Where(p => EF.Functions.Like(p.Name, $"%{SearchProduct}%"));
+        }
+
+        Products = await query.ToListAsync();
     }
 
-    public void OnPost()
+    public IActionResult OnPost()
     {
         if (!string.IsNullOrWhiteSpace(ProductName))
         {
@@ -37,5 +49,7 @@ public class IndexModel : PageModel
         }
 
         Products = _context.Products.ToList();
+
+        return RedirectToPage();
     }
 }
