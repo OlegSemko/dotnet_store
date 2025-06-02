@@ -17,14 +17,22 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public List<Product> Products { get; set; }
+    [BindProperty]
+    // public bool ShowCreateBlock { get; set; }
+    public List<Product> Products { get; set; } = new();
 
     [BindProperty]
     public string ProductName { get; set; }
+    [BindProperty]
+    public int ProductQuantity { get; set; }
+    [BindProperty]
+    public string ProductLocation { get; set; }
     public string Message { get; set; }
 
     [BindProperty(SupportsGet = true)]
     public string SearchProduct { get; set; }
+
+
 
     public async Task OnGetAsync()
     {
@@ -42,14 +50,42 @@ public class IndexModel : PageModel
     {
         if (!string.IsNullOrWhiteSpace(ProductName))
         {
-            var product = new Product { Name = ProductName };
+            var product = new Product { Name = ProductName, Quantity = ProductQuantity, Location = ProductLocation };
             _context.Products.Add(product);
             _context.SaveChanges();
             Message = "Product added successfully!";
+            // ShowCreateBlock = false;
         }
 
-        Products = _context.Products.ToList();
+        LoadProducts();
 
         return RedirectToPage();
+    }
+
+    // public IActionResult OnPostToggle()
+    // {
+    //     ShowCreateBlock = !ShowCreateBlock;
+    //     Products = _context.Products.ToList();
+    //     return Page();
+    // }
+
+    public IActionResult OnPostDelete(int id)
+    {
+        var product = _context.Products.FirstOrDefault(p => p.Id == id);
+        if (product != null)
+        {
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+        }
+
+        // Reload products after deletion
+        LoadProducts();
+        
+        return Page();
+    }
+
+    private void LoadProducts()
+    {
+        Products = _context.Products.ToList();
     }
 }
