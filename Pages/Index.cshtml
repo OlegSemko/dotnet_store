@@ -4,11 +4,14 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <div class="add-product-form">
     <h2>Add Product</h2>
 
     <form method="post">
         <input type="text" name="ProductName" placeholder="Enter product name" required />
+        <input type="text" name="ProductQuantity" placeholder="Enter product quantity" />
+        <input type="text" name="ProductLocation" placeholder="Enter product location" />
         <button type="submit">Add</button>
     </form>
     @if (!string.IsNullOrEmpty(Model.Message))
@@ -16,6 +19,7 @@
         <p style="color:green">@Model.Message</p>
     }
 </div>
+
 
 <div class="search-product-form">
     <h2>Search Products</h2>
@@ -28,10 +32,34 @@
 
 <div class="text-center">
     <h2>Product List</h2>
-    <ul>
-    @foreach (var product in Model.Products)
+    <table>
+    @if (Model.Products != null && Model.Products.Any())
     {
-        <li>@product.Name</li>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th></th>
+        </tr>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Quantity</td>
+                <td>@product.Location</td>
+                <td>
+                    <form method="post">
+                        <button type="submit" asp-page-handler="Delete" name="id" value="@product.Id">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
     }
-    </ul>
+    else
+    {
+        <p>No products found.</p>
+    }
+    </table>
 </div>
