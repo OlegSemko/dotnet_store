@@ -4,17 +4,13 @@
 // Write your JavaScript code.
 
 function checkLocationChanged(form) {
-    console.log('form', form);
     const input = form.querySelector('.location-input');
     const button = form.querySelector('.btn');
-    console.log('input', input);
     const original = input.dataset.original;
-    console.log('original', original);
     button.disabled = input.value === original;
 
     input.addEventListener('input', () => {
         button.disabled = input.value === original;
-        console.log('button disabled', button.disabled);
     });
 }
 
@@ -34,3 +30,11 @@ function openSaleModal() {
     var modal = new bootstrap.Modal(document.getElementById('saleModal'));
     modal.show();
 }
+
+document.getElementById('resetFiltersBtn').addEventListener('click', function () {
+    const form = document.getElementById('searchForm');
+    const all = document.querySelectorAll('.search-input');
+    console.log(all);
+    all.forEach(input => input.value = '');
+    form.submit();
+});
