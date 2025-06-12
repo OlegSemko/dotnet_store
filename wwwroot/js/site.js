@@ -24,3 +24,13 @@ window.addEventListener('DOMContentLoaded', () => {
         checkLocationChanged(form);
     });
 });
+
+function showInputModal() {
+    var modal = new bootstrap.Modal(document.getElementById('inputModal'));
+    modal.show();
+}
+
+function openSaleModal() {
+    var modal = new bootstrap.Modal(document.getElementById('saleModal'));
+    modal.show();
+}

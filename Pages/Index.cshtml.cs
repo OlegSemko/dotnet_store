@@ -42,6 +42,11 @@ public class IndexModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string? SearchLocation { get; set; }
 
+    [BindProperty]
+    public string SellProductIds { get; set; }
+
+    [BindProperty]
+    public string QuantitiesSold { get; set; }
 
     public async Task OnGetAsync()
     {
@@ -110,6 +115,47 @@ public class IndexModel : PageModel
 
         product.Location = location;
         await _context.SaveChangesAsync();
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostRecordSaleAsync()
+    {
+        var productIds = SellProductIds.Split(',').Select(int.Parse).ToList();
+        var quantities = QuantitiesSold.Split(',').Select(int.Parse).ToList();
+
+        if (productIds.Count != quantities.Count)
+        {
+            ModelState.AddModelError("", "Mismatched product IDs and quantities.");
+            return RedirectToPage();
+        }
+
+        for (int i = 0; i < productIds.Count; i++)
+        {
+            int productId = productIds[i];
+            int quantitySold = quantities[i];
+
+            var product = await _context.Products.FindAsync(productId);
+            if (product != null)
+            {
+                if (product.Quantity < quantitySold)
+                {
+                    return RedirectToPage();
+                }
+                product.Quantity = (product.Quantity ?? 0) - quantitySold;
+            }
+        }
+
+        var sale = new Sale
+        {
+            SellProductIds = SellProductIds,
+            QuantitiesSold = QuantitiesSold,
+            SoldAt = DateTime.Now
+        };
+
+        _context.Sales.Add(sale);
+        await _context.SaveChangesAsync();
+        LoadProducts();
 
         return RedirectToPage();
     }
