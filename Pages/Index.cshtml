@@ -20,33 +20,40 @@
     }
 </div>
 
-
-<div class="search-product-form">
-    <h2>Search Products</h2>
-
-    <form method="get">
-        <input type="text" name="SearchProduct" value="@Model.SearchProduct" placeholder="Search product" />
-        <button type="submit">Search</button>
-    </form>
-</div>
-
 <div class="text-center">
     <h2>Product List</h2>
     <table>
     @if (Model.Products != null && Model.Products.Any())
     {
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Quantity</th>
             <th>Location</th>
             <th></th>
         </tr>
+        <tr>
+            <form method="get">
+                <td><input type="number" name="SearchId" value="@Model.SearchId" placeholder="Search by ID" /></td>
+                <td><input type="text" name="SearchProduct" value="@Model.SearchProduct" placeholder="Search by Name" /></td>
+                <td><input type="number" name="SearchQuantity" value="@Model.SearchQuantity" placeholder="Search by Quantity" /></td>
+                <td><input type="text" name="SearchLocation" value="@Model.SearchLocation" placeholder="Search by Location" /></td>
+                <td><button type="submit">Search</button></td>
+            </form>
+        </tr>
         @foreach (var product in Model.Products)
         {
             <tr>
+                <td>@product.Id</td>
                 <td>@product.Name</td>
                 <td>@product.Quantity</td>
-                <td>@product.Location</td>
+                <td>
+                    <form method="post" class="location-form">
+                        <input type="hidden" name="Id" value="@product.Id" />
+                        <input type="text" class="location-input" name="Location" value="@product.Location" class="form-control" data-original="@product.Location" />
+                        <button type="submit" asp-page-handler="UpdateLocation" class="btn btn-sm btn-primary mt-1">Move product</button>
+                    </form>
+                </td>
                 <td>
                     <form method="post">
                         <button type="submit" asp-page-handler="Delete" name="id" value="@product.Id">
