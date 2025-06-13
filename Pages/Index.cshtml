@@ -61,6 +61,7 @@
 <button type="button" class="btn btn-success" onclick="showInputModal()">Add Product</button>
 
 <button type="button" class="btn btn-warning" onclick="openSaleModal()">Record Sale</button>
+<button type="button" id="resetFiltersBtn" class="btn btn-outline-secondary">Reset Search criteria</button>
 
 <div class="text-center">
     <h2>Product List</h2>
@@ -75,11 +76,11 @@
             <th></th>
         </tr>
         <tr>
-            <form method="get">
-                <td><input type="number" name="SearchId" value="@Model.SearchId" placeholder="Search by ID" /></td>
-                <td><input type="text" name="SearchProduct" value="@Model.SearchProduct" placeholder="Search by Name" /></td>
-                <td><input type="number" name="SearchQuantity" value="@Model.SearchQuantity" placeholder="Search by Quantity" /></td>
-                <td><input type="text" name="SearchLocation" value="@Model.SearchLocation" placeholder="Search by Location" /></td>
+            <form id="searchForm" method="get">
+                <td><input class="search-input" type="number" name="SearchId" value="@Model.SearchId" placeholder="Search by ID" /></td>
+                <td><input class="search-input" type="text" name="SearchProduct" value="@Model.SearchProduct" placeholder="Search by Name" /></td>
+                <td><input class="search-input" type="number" name="SearchQuantity" value="@Model.SearchQuantity" placeholder="Search by Quantity" /></td>
+                <td><input class="search-input" type="text" name="SearchLocation" value="@Model.SearchLocation" placeholder="Search by Location" /></td>
                 <td><button type="submit">Search</button></td>
             </form>
         </tr>

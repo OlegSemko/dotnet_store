@@ -1,0 +1,29 @@
+﻿@page
+@model MyTestApp.Pages.SalesModel
+@{
+    ViewData["Title"] = "Sales History";
+}
+
+<h2>Sales History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Quantity Sold</th>
+            <th>Sold At</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.SaleViewModels)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.ProductName</td>
+            <td>@item.QuantitySold</td>
+            <td>@item.SoldAt.ToString("yyyy-MM-dd HH:mm")</td>
+        </tr>
+    }
+    </tbody>
+</table>
