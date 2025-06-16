@@ -66,8 +66,6 @@
 <div class="text-center">
     <h2>Product List</h2>
     <table>
-    @if (Model.Products != null && Model.Products.Any())
-    {
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -106,10 +104,5 @@
                 </td>
             </tr>
         }
-    }
-    else
-    {
-        <p>No products found.</p>
-    }
     </table>
 </div>
