@@ -10,7 +10,11 @@ This is a sample project to learn and test ASP.NET DB
 Clone the repo:
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/OlegSemko/dotnet_store.git
+```
+or
+```bash
+git@github.com:OlegSemko/dotnet_store.git
 ```
 
 Set mysql db:
